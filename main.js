@@ -6,29 +6,41 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-	constructor(fieldArr) {
+	constructor(fieldArr, hpp, vpp) {
 		this.field = fieldArr;
+		this.horizontalPlayerPosition = hpp;
+		this.verticalPlayerPosition = vpp;
 	}
 	print() {
 		const joinedFieldArr = this.field.join('');
 		return joinedFieldArr;
 	}
-	moveRight() {
-	
+
+	playerMove(direction) {
+		if ((direction = 'right')) {
+			this.playerPosition;
+		}
 	}
 	playerPosition() {
-		let playerLocation = null
-		for(let i = 0; i < 1; i ++) {
-			// console.log(this.field[i])
-			for(let j = 0; j < this.field[i].length; j ++) {
-				// console.log(this.field[i][j])
-				if(this.field[i][j] === '*') {
-					playerLocation = this.field[i][j]
-				} 
+		for (let i = 0; i < this.field.length; i++) {
+			if ((this.field[i] = '*')) {
+				this.verticalPlayerPosition = i;
+				// console.log(this.verticalPlayerPosition);
 			}
-		} return playerLocation
+			for (let j = 0; j < i.length; j++) {
+				if ((j = '*')) {
+					this.horizontalPlayerPosition = j;
+				}
+			}
+		}
+		let position = this.horizontalPlayerPosition;
+
+		return position;
 	}
+	winningConditions() {}
 }
+
+const userSelection = 'right';
 
 const myField = new Field([
 	['*', '░', 'O'],
@@ -36,5 +48,6 @@ const myField = new Field([
 	['░', '^', '░'],
 ]);
 
+myField.print();
 console.log(myField.print());
-console.log(myField.playerPosition())
+console.log(myField.playerPosition());
