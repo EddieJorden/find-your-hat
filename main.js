@@ -6,10 +6,11 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-	constructor(fieldArr, hpp, vpp) {
+	constructor(fieldArr) {
 		this.field = fieldArr;
-		this.horizontalPlayerPosition = hpp;
-		this.verticalPlayerPosition = vpp;
+		this.horizontalPlayerPosition = null;
+
+		this.verticalPlayerPosition = null;
 	}
 	print() {
 		const joinedFieldArr = this.field.join('');
@@ -23,31 +24,40 @@ class Field {
 	}
 	playerPosition() {
 		for (let i = 0; i < this.field.length; i++) {
-			if ((this.field[i] = '*')) {
-				this.verticalPlayerPosition = i;
-				// console.log(this.verticalPlayerPosition);
-			}
-			for (let j = 0; j < i.length; j++) {
-				if ((j = '*')) {
+			// console.log(this.field[i]);
+			// if ((this.field[i] = '*')) {
+			// 	this.verticalPlayerPosition = i;
+			// 	// console.log(this.verticalPlayerPosition);
+			// }
+			for (let j = 0; j < this.field[i].length; j++) {
+				if (this.field[i][j] === '*') {
 					this.horizontalPlayerPosition = j;
-				}
+				} else continue;
+			}
+			// console.log('horizontalPlayerPosition', horizontalPlayerPosition);
+		}
+		for (let k = 0; k < this.field.length; k++) {
+			for (let l = 0; l < this.field[k].length; l++) {
+				if (this.field[k][l] === '*') {
+					this.verticalPlayerPosition = k;
+				} else continue;
 			}
 		}
-		let position = this.horizontalPlayerPosition;
-
-		return position;
+		return (
+			'Player Position = ' +
+			this.horizontalPlayerPosition +
+			' X ' +
+			this.verticalPlayerPosition
+		);
 	}
-	winningConditions() {}
 }
 
-const userSelection = 'right';
-
 const myField = new Field([
-	['*', '░', 'O'],
+	['░', '░', '░'],
 	['░', 'O', '░'],
-	['░', '^', '░'],
+	['░', '^', '*'],
 ]);
 
-myField.print();
-console.log(myField.print());
+// myField.print();
+// console.log(myField.print());
 console.log(myField.playerPosition());
