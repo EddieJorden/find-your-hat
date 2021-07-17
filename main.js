@@ -67,3 +67,5 @@ const myField = new Field(
 console.log(myField.print());
 console.log(myField.name);
 console.log(myField.playerPosition());
+console.log(myField.horizontalPlayerPosition);
+console.log(myField.verticalPlayerPosition);
