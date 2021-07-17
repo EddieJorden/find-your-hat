@@ -6,11 +6,11 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-	constructor(fieldArr) {
+	constructor(fieldArr, name) {
 		this.field = fieldArr;
 		this.horizontalPlayerPosition = null;
-
 		this.verticalPlayerPosition = null;
+		this.name = name;
 	}
 	print() {
 		const joinedFieldArr = this.field.join('');
@@ -22,6 +22,7 @@ class Field {
 			this.playerPosition;
 		}
 	}
+
 	playerPosition() {
 		for (let i = 0; i < this.field.length; i++) {
 			// console.log(this.field[i]);
@@ -50,14 +51,19 @@ class Field {
 			this.verticalPlayerPosition
 		);
 	}
+	winningConditions() {}
 }
 
-const myField = new Field([
-	['░', '░', '░'],
-	['░', 'O', '░'],
-	['░', '^', '*'],
-]);
+const myField = new Field(
+	[
+		['░', '░', '░'],
+		['*', 'O', ''],
+		['░', '^', '░'],
+	],
+	'Joolie'
+);
 
 // myField.print();
-// console.log(myField.print());
+console.log(myField.print());
+console.log(myField.name);
 console.log(myField.playerPosition());
