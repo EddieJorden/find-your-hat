@@ -5,23 +5,24 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
+
 class Field {
-	constructor(fieldArr, name) {
-		this.field = fieldArr;
+	constructor(fieldArr) {
+		this.field = fieldArr
 		this.horizontalPlayerPosition = null;
 		this.verticalPlayerPosition = null;
-		this.name = name;
+		
 	}
 	print() {
 		const joinedFieldArr = this.field.join('');
-		return joinedFieldArr;
+		return this.field;
 	}
 
-	playerMove(playerChoice) {
+	playerMove(playerChoice, currentField) {
+		
 		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
 		if (playerChoice === 'right') {
 			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 0) {
-				console.log('player position is 0 or 1');
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition + 1,
 					1,
@@ -54,8 +55,13 @@ class Field {
 					'░'
 				);
 			}
-			return this.field;
+			let currentFieldArr = this.field
+			// currentFieldArr.push(this.field)
+			// console.log(currentFieldArr)
+			console.log(currentFieldArr)
+			return currentFieldArr
 		} else return 'not right';
+
 	}
 
 	playerPosition() {
@@ -85,20 +91,28 @@ class Field {
 
 const myField = new Field(
 	[
-		['░', '░', '*'],
-		['░', 'O', ''],
+		['*', '░', '░'],
+		['░', 'O', '░'],
 		['░', '^', '░'],
-	],
-	'Joolie'
+	]
+	
 );
 
 // myField.print();
-console.log(myField.print());
-console.log(myField.name);
+console.log('myField.print()', myField.print());
+
 console.log(myField.playerPosition());
 console.log(
 	'myField.horizontalPlayerPosition',
 	myField.horizontalPlayerPosition
 );
 console.log('myField.verticalPlayerPosition', myField.verticalPlayerPosition);
-console.log(myField.playerMove('right'));
+
+const playerMovedRight = myField.playerMove('right')
+const playerMovedRightAgain = myField.playerMove('right', playerMovedRight)
+console.log('playerMovedRight', playerMovedRight);
+console.log(playerMovedRightAgain)
+
+
+
+
