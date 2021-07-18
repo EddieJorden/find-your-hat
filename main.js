@@ -5,21 +5,36 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
-
 class Field {
 	constructor(fieldArr) {
-		this.field = fieldArr
+		this.field = fieldArr;
 		this.horizontalPlayerPosition = null;
 		this.verticalPlayerPosition = null;
-		
+		this.playerInput = null;
 	}
 	print() {
 		const joinedFieldArr = this.field.join('');
 		return this.field;
 	}
 
-	playerMove(playerChoice, currentField) {
-		
+	playerChoice() {
+		const prompt = require('prompt-sync')();
+
+		const choice = prompt('what direction would you like to move?');
+		console.log(`you chose ${choice}`);
+		let answer = choice;
+
+		this.playerInput = answer;
+	}
+
+	gameLoop() {
+		for (let i = 0; this.winningConditions() === false; i++) {
+			this.playerChoice();
+			// let userInput = this.playerChoice();
+		}
+	}
+
+	playerMove(playerChoice) {
 		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
 		if (playerChoice === 'right') {
 			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 0) {
@@ -55,13 +70,12 @@ class Field {
 					'░'
 				);
 			}
-			let currentFieldArr = this.field
+			let currentFieldArr = this.field;
 			// currentFieldArr.push(this.field)
 			// console.log(currentFieldArr)
-			console.log(currentFieldArr)
-			return currentFieldArr
+			console.log(currentFieldArr);
+			return currentFieldArr;
 		} else return 'not right';
-
 	}
 
 	playerPosition() {
@@ -86,33 +100,34 @@ class Field {
 			this.verticalPlayerPosition
 		);
 	}
-	winningConditions() {}
+	winningConditions() {
+		// let gameWon = this.playerChoice();
+		// console.log(gameWon);
+		if (this.playerInput === 'r') {
+			return true;
+		} else return false;
+	}
 }
 
-const myField = new Field(
-	[
-		['*', '░', '░'],
-		['░', 'O', '░'],
-		['░', '^', '░'],
-	]
-	
-);
+const myField = new Field([
+	['*', '░', '░'],
+	['░', 'O', '░'],
+	['░', '^', '░'],
+]);
 
 // myField.print();
-console.log('myField.print()', myField.print());
+// console.log('myField.print()', myField.print());
 
-console.log(myField.playerPosition());
-console.log(
-	'myField.horizontalPlayerPosition',
-	myField.horizontalPlayerPosition
-);
-console.log('myField.verticalPlayerPosition', myField.verticalPlayerPosition);
+// console.log(myField.playerPosition());
+// console.log(
+// 	'myField.horizontalPlayerPosition',
+// 	myField.horizontalPlayerPosition
+// );
+// console.log('myField.verticalPlayerPosition', myField.verticalPlayerPosition);
 
-const playerMovedRight = myField.playerMove('right')
-const playerMovedRightAgain = myField.playerMove('right', playerMovedRight)
-console.log('playerMovedRight', playerMovedRight);
-console.log(playerMovedRightAgain)
+// const playerMovedRight = myField.playerMove('right');
+// const playerMovedRightAgain = myField.playerMove('right', playerMovedRight);
+// console.log('playerMovedRight', playerMovedRight);
+// console.log(playerMovedRightAgain)
 
-
-
-
+myField.gameLoop();
