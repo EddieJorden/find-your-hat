@@ -17,25 +17,54 @@ class Field {
 		return joinedFieldArr;
 	}
 
-	playerMove(direction) {
-		if ((direction = 'right')) {
-			this.playerPosition;
-		}
+	playerMove(playerChoice) {
+		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
+		if (playerChoice === 'right') {
+			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 0) {
+				console.log('player position is 0 or 1');
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition + 1,
+					1,
+					'*'
+				);
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 1) {
+				console.log('player position is 0 or 1');
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition + 1,
+					1,
+					'*'
+				);
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 2) {
+				this.field[this.verticalPlayerPosition].splice(0, 1, '*');
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			return this.field;
+		} else return 'not right';
 	}
 
 	playerPosition() {
 		for (let i = 0; i < this.field.length; i++) {
-			// console.log(this.field[i]);
-			// if ((this.field[i] = '*')) {
-			// 	this.verticalPlayerPosition = i;
-			// 	// console.log(this.verticalPlayerPosition);
-			// }
 			for (let j = 0; j < this.field[i].length; j++) {
 				if (this.field[i][j] === '*') {
 					this.horizontalPlayerPosition = j;
 				} else continue;
 			}
-			// console.log('horizontalPlayerPosition', horizontalPlayerPosition);
 		}
 		for (let k = 0; k < this.field.length; k++) {
 			for (let l = 0; l < this.field[k].length; l++) {
@@ -56,8 +85,8 @@ class Field {
 
 const myField = new Field(
 	[
-		['░', '░', '░'],
-		['*', 'O', ''],
+		['░', '░', '*'],
+		['░', 'O', ''],
 		['░', '^', '░'],
 	],
 	'Joolie'
@@ -67,5 +96,9 @@ const myField = new Field(
 console.log(myField.print());
 console.log(myField.name);
 console.log(myField.playerPosition());
-console.log(myField.horizontalPlayerPosition);
-console.log(myField.verticalPlayerPosition);
+console.log(
+	'myField.horizontalPlayerPosition',
+	myField.horizontalPlayerPosition
+);
+console.log('myField.verticalPlayerPosition', myField.verticalPlayerPosition);
+console.log(myField.playerMove('right'));
