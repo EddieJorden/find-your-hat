@@ -11,9 +11,16 @@ class Field {
 		this.horizontalPlayerPosition = null;
 		this.verticalPlayerPosition = null;
 		this.playerInput = null;
+		this.horizontalHatPosition = null;
+		this.verticalHatPosition = null;
+		this.horizontalHolePosition = null;
+		this.verticalHolePosition = null;
+		this.playerDead = false;
+		this.gameOver = false;
+		this.turnCount = 0;
+		this.freshField = fieldArr;
 	}
 	print() {
-		const joinedFieldArr = this.field.join('');
 		this.field.forEach((item) => {
 			console.log(item);
 		});
@@ -27,25 +34,48 @@ class Field {
 
 		return choice;
 	}
+	restartOrExit() {
+		const prompt = require('prompt-sync')();
 
-	gameLoop() {
-		for (let i = 0; this.winningConditions() === false; i++) {
-			this.print();
-			let userInput = this.playerChoice();
-			this.playerPosition();
-			this.playerMove(userInput);
+		const choice = prompt('exit or restart?');
+		console.log(`you chose ${choice}`);
+
+		return choice;
+	}
+
+	gameLoop(fieldArr) {
+		const freshField = this.freshField;
+		if (this.gameOver === false) {
+			for (let i = 0; this.gameOver === false; i++) {
+				this.turnCount = i;
+				this.print();
+				let userInput = this.playerChoice();
+				this.playerPosition();
+				this.hatPosition();
+				this.playerMove(userInput);
+				this.winningConditions();
+			}
+		}
+		if (this.gameOver === true) {
+			let userRestartOrExit = this.restartOrExit();
+			if (userRestartOrExit === 'restart') {
+				this.gameOver = false;
+				const newGame = new Field([
+					['*', '░', '░'],
+					['░', 'O', '░'],
+					['░', '^', '░'],
+				]);
+				newGame.gameLoop();
+			} else console.log('exiting');
 		}
 	}
 
 	playerMove(userInput) {
-		console.log('userInput inside playerMove method = ', userInput);
 		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
-		console.log(this.horizontalPlayerPosition);
 		const startingVerticalPlayerPosition = this.verticalPlayerPosition;
-		console.log(this.verticalPlayerPosition);
+
 		if (userInput === 'right') {
 			if (userInput === 'right' && startingHorizontalPlayerPosition === 0) {
-				console.log('userInput number 2', userInput);
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition + 1,
 					1,
@@ -58,7 +88,6 @@ class Field {
 				);
 			}
 			if (userInput === 'right' && startingHorizontalPlayerPosition === 1) {
-				console.log('player position is 0 or 1');
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition + 1,
 					1,
@@ -81,7 +110,6 @@ class Field {
 		}
 		if (userInput === 'left') {
 			if (userInput === 'left' && startingHorizontalPlayerPosition === 0) {
-				console.log('userInput number 2', userInput);
 				this.field[this.verticalPlayerPosition].splice(2, 1, '*');
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition,
@@ -90,7 +118,6 @@ class Field {
 				);
 			}
 			if (userInput === 'left' && startingHorizontalPlayerPosition === 1) {
-				console.log('player position is 0 or 1');
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition - 1,
 					1,
@@ -116,7 +143,6 @@ class Field {
 			}
 		}
 		if (userInput === 'up') {
-			console.log('the player has chosen up!!');
 			if (userInput === 'up' && startingVerticalPlayerPosition === 0) {
 				this.field[2].splice(this.horizontalPlayerPosition, 1, '*');
 				this.field[startingVerticalPlayerPosition].splice(
@@ -146,6 +172,41 @@ class Field {
 				);
 			}
 		}
+		if (userInput === 'down') {
+			if (userInput === 'down' && startingVerticalPlayerPosition === 0) {
+				this.field[startingVerticalPlayerPosition + 1].splice(
+					this.horizontalPlayerPosition,
+					1,
+					'*'
+				);
+				this.field[startingVerticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (userInput === 'down' && startingVerticalPlayerPosition === 2) {
+				this.field[0].splice(startingHorizontalPlayerPosition, 1, '*');
+				this.field[startingVerticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (userInput === 'down' && startingVerticalPlayerPosition === 1) {
+				this.field[startingVerticalPlayerPosition + 1].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'*'
+				);
+				this.field[startingVerticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+		}
+		this.winningConditions();
 	}
 
 	playerPosition() {
@@ -164,12 +225,63 @@ class Field {
 			}
 		}
 	}
+	hatPosition() {
+		for (let i = 0; i < this.field.length; i++) {
+			for (let j = 0; j < this.field[i].length; j++) {
+				if (this.field[i][j] === '^') {
+					this.horizontalHatPosition = j;
+				}
+			}
+		}
+		for (let k = 0; k < this.field.length; k++) {
+			for (let l = 0; l < this.field[k].length; l++) {
+				if (this.field[k][l] === '^') {
+					this.verticalHatPosition = k;
+				}
+			}
+		}
+	}
+	holePosition() {
+		for (let i = 0; i < this.field.length; i++) {
+			for (let j = 0; j < this.field[i].length; j++) {
+				if (this.field[i][j] === 'O') {
+					this.horizontalHolePosition = j;
+				}
+			}
+		}
+		for (let k = 0; k < this.field.length; k++) {
+			for (let l = 0; l < this.field[k].length; l++) {
+				if (this.field[k][l] === 'O') {
+					this.verticalHolePosition = k;
+				}
+			}
+		}
+	}
+	deadPlayerConditions() {
+		if (
+			this.horizontalPlayerPosition === this.horizontalHolePosition &&
+			this.verticalPlayerPosition === this.verticalHolePosition
+		) {
+			this.playerDead = true;
+		} else this.playerDead = false;
+	}
 	winningConditions() {
-		// let gameWon = this.playerChoice();
-		// console.log(gameWon);
-		if (this.playerInput === 'r') {
-			return true;
-		} else return false;
+		this.hatPosition();
+		this.holePosition();
+		this.deadPlayerConditions();
+		this.playerPosition();
+
+		if (this.playerDead === true) {
+			console.log(`you have died in ${this.turnCount + 1} turns`);
+			this.gameOver = true;
+		} else if (
+			this.playerDead === false &&
+			this.horizontalPlayerPosition === this.horizontalHatPosition &&
+			this.verticalPlayerPosition === this.verticalHatPosition
+		) {
+			console.log(`you have found your hat in ${this.turnCount + 1} turns`);
+			this.gameOver = true;
+		}
 	}
 }
 
@@ -178,20 +290,5 @@ const myField = new Field([
 	['░', 'O', '░'],
 	['░', '^', '░'],
 ]);
-
-// myField.print();
-// console.log('myField.print()', myField.print());
-
-// console.log(myField.playerPosition());
-// console.log(
-// 	'myField.horizontalPlayerPosition',
-// 	myField.horizontalPlayerPosition
-// );
-// console.log('myField.verticalPlayerPosition', myField.verticalPlayerPosition);
-
-// const playerMovedRight = myField.playerMove('right');
-// const playerMovedRightAgain = myField.playerMove('right', playerMovedRight);
-// console.log('playerMovedRight', playerMovedRight);
-// console.log(playerMovedRightAgain)
 
 myField.gameLoop();
