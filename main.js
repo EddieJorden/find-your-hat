@@ -14,7 +14,9 @@ class Field {
 	}
 	print() {
 		const joinedFieldArr = this.field.join('');
-		return this.field;
+		this.field.forEach((item) => {
+			console.log(item);
+		});
 	}
 
 	playerChoice() {
@@ -28,16 +30,19 @@ class Field {
 
 	gameLoop() {
 		for (let i = 0; this.winningConditions() === false; i++) {
+			this.print();
 			let userInput = this.playerChoice();
-			let playerPosition = this.playerPosition();
+			this.playerPosition();
 			this.playerMove(userInput);
 		}
 	}
 
 	playerMove(userInput) {
-		console.log('userInput', userInput);
+		console.log('userInput inside playerMove method = ', userInput);
 		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
 		console.log(this.horizontalPlayerPosition);
+		const startingVerticalPlayerPosition = this.verticalPlayerPosition;
+		console.log(this.verticalPlayerPosition);
 		if (userInput === 'right') {
 			if (userInput === 'right' && startingHorizontalPlayerPosition === 0) {
 				console.log('userInput number 2', userInput);
@@ -73,11 +78,73 @@ class Field {
 					'░'
 				);
 			}
-			let currentFieldArr = this.print();
-			// currentFieldArr.push(this.field)
-			// console.log(currentFieldArr)
-			console.log('currentFieldArr', currentFieldArr);
-			return currentFieldArr;
+		}
+		if (userInput === 'left') {
+			if (userInput === 'left' && startingHorizontalPlayerPosition === 0) {
+				console.log('userInput number 2', userInput);
+				this.field[this.verticalPlayerPosition].splice(2, 1, '*');
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (userInput === 'left' && startingHorizontalPlayerPosition === 1) {
+				console.log('player position is 0 or 1');
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition - 1,
+					1,
+					'*'
+				);
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (userInput === 'left' && startingHorizontalPlayerPosition === 2) {
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition - 1,
+					1,
+					'*'
+				);
+				this.field[this.verticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+		}
+		if (userInput === 'up') {
+			console.log('the player has chosen up!!');
+			if (userInput === 'up' && startingVerticalPlayerPosition === 0) {
+				this.field[2].splice(this.horizontalPlayerPosition, 1, '*');
+				this.field[startingVerticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (userInput === 'up' && startingVerticalPlayerPosition === 2) {
+				this.field[1].splice(startingHorizontalPlayerPosition, 1, '*');
+				this.field[startingVerticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
+			if (userInput === 'up' && startingVerticalPlayerPosition === 1) {
+				this.field[startingVerticalPlayerPosition - 1].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'*'
+				);
+				this.field[startingVerticalPlayerPosition].splice(
+					startingHorizontalPlayerPosition,
+					1,
+					'░'
+				);
+			}
 		}
 	}
 
