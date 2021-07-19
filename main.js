@@ -22,22 +22,25 @@ class Field {
 
 		const choice = prompt('what direction would you like to move?');
 		console.log(`you chose ${choice}`);
-		let answer = choice;
 
-		this.playerInput = answer;
+		return choice;
 	}
 
 	gameLoop() {
 		for (let i = 0; this.winningConditions() === false; i++) {
-			this.playerChoice();
-			// let userInput = this.playerChoice();
+			let userInput = this.playerChoice();
+			let playerPosition = this.playerPosition();
+			this.playerMove(userInput);
 		}
 	}
 
-	playerMove(playerChoice) {
+	playerMove(userInput) {
+		console.log('userInput', userInput);
 		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
-		if (playerChoice === 'right') {
-			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 0) {
+		console.log(this.horizontalPlayerPosition);
+		if (userInput === 'right') {
+			if (userInput === 'right' && startingHorizontalPlayerPosition === 0) {
+				console.log('userInput number 2', userInput);
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition + 1,
 					1,
@@ -49,7 +52,7 @@ class Field {
 					'░'
 				);
 			}
-			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 1) {
+			if (userInput === 'right' && startingHorizontalPlayerPosition === 1) {
 				console.log('player position is 0 or 1');
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition + 1,
@@ -62,7 +65,7 @@ class Field {
 					'░'
 				);
 			}
-			if (playerChoice === 'right' && startingHorizontalPlayerPosition === 2) {
+			if (userInput === 'right' && startingHorizontalPlayerPosition === 2) {
 				this.field[this.verticalPlayerPosition].splice(0, 1, '*');
 				this.field[this.verticalPlayerPosition].splice(
 					startingHorizontalPlayerPosition,
@@ -70,12 +73,12 @@ class Field {
 					'░'
 				);
 			}
-			let currentFieldArr = this.field;
+			let currentFieldArr = this.print();
 			// currentFieldArr.push(this.field)
 			// console.log(currentFieldArr)
-			console.log(currentFieldArr);
+			console.log('currentFieldArr', currentFieldArr);
 			return currentFieldArr;
-		} else return 'not right';
+		}
 	}
 
 	playerPosition() {
@@ -83,22 +86,16 @@ class Field {
 			for (let j = 0; j < this.field[i].length; j++) {
 				if (this.field[i][j] === '*') {
 					this.horizontalPlayerPosition = j;
-				} else continue;
+				}
 			}
 		}
 		for (let k = 0; k < this.field.length; k++) {
 			for (let l = 0; l < this.field[k].length; l++) {
 				if (this.field[k][l] === '*') {
 					this.verticalPlayerPosition = k;
-				} else continue;
+				}
 			}
 		}
-		return (
-			'Player Position = ' +
-			this.horizontalPlayerPosition +
-			' X ' +
-			this.verticalPlayerPosition
-		);
 	}
 	winningConditions() {
 		// let gameWon = this.playerChoice();
