@@ -20,6 +20,7 @@ class Field {
 		this.turnCount = 0;
 		this.freshField = fieldArr;
 	}
+
 	print() {
 		this.field.forEach((item) => {
 			console.log(item);
@@ -28,22 +29,19 @@ class Field {
 
 	playerChoice() {
 		const prompt = require('prompt-sync')();
-
 		const choice = prompt('what direction would you like to move?');
 		console.log(`you chose ${choice}`);
-
 		return choice;
 	}
+
 	restartOrExit() {
 		const prompt = require('prompt-sync')();
-
 		const choice = prompt('exit or restart?');
 		console.log(`you chose ${choice}`);
-
 		return choice;
 	}
 
-	gameLoop(fieldArr) {
+	gameLoop() {
 		const freshField = this.freshField;
 		if (this.gameOver === false) {
 			for (let i = 0; this.gameOver === false; i++) {
@@ -73,7 +71,6 @@ class Field {
 	playerMove(userInput) {
 		const startingHorizontalPlayerPosition = this.horizontalPlayerPosition;
 		const startingVerticalPlayerPosition = this.verticalPlayerPosition;
-
 		if (userInput === 'right') {
 			if (userInput === 'right' && startingHorizontalPlayerPosition === 0) {
 				this.field[this.verticalPlayerPosition].splice(
@@ -270,7 +267,6 @@ class Field {
 		this.holePosition();
 		this.deadPlayerConditions();
 		this.playerPosition();
-
 		if (this.playerDead === true) {
 			console.log(`you have died in ${this.turnCount + 1} turns`);
 			this.gameOver = true;
@@ -284,11 +280,9 @@ class Field {
 		}
 	}
 }
-
 const myField = new Field([
 	['*', '░', '░'],
 	['░', 'O', '░'],
 	['░', '^', '░'],
 ]);
-
 myField.gameLoop();
